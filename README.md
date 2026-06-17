@@ -2,10 +2,6 @@
 
 Track engineering work from **Jira** and **GitHub** in one place. Generate individual or team activity reports with PR stats, ticket status, comments, and open items.
 
-```bash
-git clone https://github.com/vivekv1504/WorkTrackSkill.git
-```
-
 ---
 
 ## What this skill showcases
@@ -35,7 +31,8 @@ git clone https://github.com/vivekv1504/WorkTrackSkill.git
 
 ```
 work_track_skill/
-├── README.md        ← You are here (setup + overview)
+├── README.md        ← Overview
+├── INSTALL.md       ← Step-by-step install (start here for new users)
 ├── SKILL.md         ← Agent instructions (required for the skill)
 ├── config.json      ← Default user, Jira projects, URLs, period
 ├── team.json        ← Team roster (GitHub + optional Jira emails)
@@ -45,13 +42,17 @@ work_track_skill/
 
 ---
 
+## Quick install
+
+See **[INSTALL.md](INSTALL.md)** for full steps (Cursor, Claude CLI, Jira MCP, and GitHub-only mode).
+
 ## Setup — Cursor
 
 1. **Copy the skill folder**
 
    ```bash
    mkdir -p ~/.cursor/skills/work-track
-   cp -r WorkTrackSkill/* ~/.cursor/skills/work-track/
+   cp -r /path/to/work_track_skill/* ~/.cursor/skills/work-track/
    ```
 
    Or drag `work_track_skill` contents into:
@@ -98,7 +99,7 @@ work_track_skill/
 
    ```bash
    mkdir -p ~/.claude/skills/work-track
-   cp -r WorkTrackSkill/* ~/.claude/skills/work-track/
+   cp -r /path/to/work_track_skill/* ~/.claude/skills/work-track/
    ```
 
 2. **Auth — shell environment**
