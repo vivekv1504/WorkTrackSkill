@@ -85,7 +85,18 @@ Also update `done_statuses` / `in_progress_statuses` if your workflow uses diffe
 
 ## Auth (Claude CLI)
 
-Set in shell profile or `.env` (never commit tokens):
+**MCP config paths (Claude Code):**
+
+| Scope | Correct file |
+|-------|----------------|
+| User | `~/.claude.json` → `"mcpServers"` |
+| Project | `.mcp.json` at project root |
+
+**Not read:** `~/.claude/mcp.json`, `~/.cursor/mcp.json`, `settings.json`
+
+Verify: `claude mcp list` should show `jira` and `jira-sjc12` as Connected.
+
+Set env vars only if using the script fallback (optional when MCP works):
 
 ```bash
 export JIRA_BASE_URL=https://jira-eng-sjc12.cisco.com/jira

@@ -120,11 +120,37 @@ Jira data requires **some** authenticated access. Pick one method:
 4. **Never commit tokens** to git — MCP settings only
 5. Toggle MCP servers **On**, reload Cursor, connect VPN if needed
 
-> **Important:** Cursor reads `~/.cursor/mcp.json`. That file is **not** used by Claude Code CLI.
+> **Important:** Cursor reads `~/.cursor/mcp.json`. Claude Code CLI does **not** read that file — and it also does **not** read `~/.claude/mcp.json`.
 
 ### Method A2: Jira MCP in Claude Code CLI (required for Jira in terminal)
 
-Claude CLI does **not** read `~/.cursor/mcp.json`. Configure Jira separately using **one** of these:
+Claude Code reads MCP from **only** these paths:
+
+| Scope | File |
+|-------|------|
+| User (all projects) | `~/.claude.json` → top-level `"mcpServers"` |
+| Project (this repo) | `.mcp.json` at **project root** (not inside `.claude/`) |
+
+**Wrong paths (ignored):** `~/.claude/mcp.json`, `~/.cursor/mcp.json`, `settings.json`
+
+If you already created `~/.claude/mcp.json`, migrate it:
+
+```bash
+# Merge into user scope (correct location)
+python3 - <<'PY'
+import json
+from pathlib import Path
+claude = json.loads(Path.home().joinpath(".claude.json").read_text())
+src = json.loads(Path.home().joinpath(".claude/mcp.json").read_text())
+claude.setdefault("mcpServers", {}).update(src.get("mcpServers", {}))
+Path.home().joinpath(".claude.json").write_text(json.dumps(claude, indent=2) + "\n")
+print("Migrated:", list(src.get("mcpServers", {}).keys()))
+PY
+
+claude mcp list   # should show jira + jira-sjc12 Connected
+```
+
+Or use **Option 1** below (`claude mcp add`).
 
 #### Option 1 — CLI (recommended)
 
