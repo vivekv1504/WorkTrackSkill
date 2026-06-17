@@ -3,39 +3,17 @@
   "jira_base_url": "https://jira-eng-sjc12.cisco.com/jira",
   "github_scope": "webex/*",
   "members": [
-    {
-      "name": "Coread",
-      "jira_email": "",
-      "github": "Coread",
-      "active": true
-    },
-    {
-      "name": "HEM DUTT",
-      "jira_email": "",
-      "github": "HemDutt",
-      "active": true
-    },
+
     {
       "name": "Jahnavi314",
-      "jira_email": "",
+      "jira_email": "jveligan@cisco.com",
       "github": "Jahnavi314",
       "active": true
     },
-    {
-      "name": "Jan Podmajersky",
-      "jira_email": "",
-      "github": "JanPodmajersky",
-      "active": true
-    },
-    {
-      "name": "JudyZhu",
-      "jira_email": "",
-      "github": "JudyZhuHz",
-      "active": true
-    },
+
     {
       "name": "Kesari3008",
-      "jira_email": "",
+      "jira_email": "pkesari@cisco.com",
       "github": "Kesari3008",
       "active": true
     },
@@ -46,38 +24,20 @@
       "active": true
     },
     {
-      "name": "Filip Nowakowski",
-      "jira_email": "",
-      "github": "SomeBody16",
-      "active": true
-    },
-    {
-      "name": "Waseemraj",
-      "jira_email": "",
-      "github": "Waseemraj",
-      "active": true
-    },
-    {
-      "name": "WeijuanShao",
-      "jira_email": "",
-      "github": "WeijuanShao",
-      "active": true
-    },
-    {
       "name": "Adam Weeks",
-      "jira_email": "",
+      "jira_email": "adweeks@cisco.com",
       "github": "adamweeks",
       "active": true
     },
     {
       "name": "Adam Ranganathan",
-      "jira_email": "",
+      "jira_email": "adaranga@cisco.com",
       "github": "adaranga",
       "active": true
     },
     {
       "name": "Adhwaith Menon",
-      "jira_email": "",
+      "jira_email": "adhmenon@cisco.com",
       "github": "adhmenon",
       "active": true
     },
@@ -89,266 +49,62 @@
     },
     {
       "name": "akulakum",
-      "jira_email": "",
+      "jira_email": "akulakum@cisco.com",
       "github": "akulakum",
       "active": true
     },
     {
-      "name": "Allen Jia",
-      "jira_email": "",
-      "github": "allen9918",
-      "active": true
-    },
-    {
-      "name": "Andi Wilson",
-      "jira_email": "",
-      "github": "andiwils",
-      "active": true
-    },
-    {
       "name": "Ankit Batra",
-      "jira_email": "",
+      "jira_email": "ankibatr@cisco.com",
       "github": "ankbat",
       "active": true
     },
     {
       "name": "ankibatr",
-      "jira_email": "",
+      "jira_email": "ankibatr@cisco.com",
       "github": "ankibatr",
       "active": true
     },
     {
       "name": "Anna Tsukanova",
-      "jira_email": "",
+      "jira_email": "antsukan@cisco.com",
       "github": "antsukanova",
       "active": true
     },
     {
       "name": "Arun Ganeshan",
-      "jira_email": "",
+      "jira_email": "arungane@cisco.com",
       "github": "arun3528",
       "active": true
     },
     {
       "name": "Ashish Das",
-      "jira_email": "",
+      "jira_email": "ashish09@cisco.com",
       "github": "ashish-cisco",
       "active": true
     },
     {
       "name": "Bala Obul Reddy Sangana",
-      "jira_email": "",
+      "jira_email": "balaored@cisco.com",
       "github": "balasangana",
       "active": true
     },
     {
-      "name": "bbaldino",
-      "jira_email": "",
-      "github": "bbaldino",
-      "active": true
-    },
-    {
       "name": "Bharath Balan",
-      "jira_email": "",
+      "jira_email": "bhabalan@cisco.com",
       "github": "bhabalan",
       "active": true
     },
     {
-      "name": "Matthew",
-      "jira_email": "",
-      "github": "brain-frog",
-      "active": true
-    },
-    {
-      "name": "briancp",
-      "jira_email": "",
-      "github": "briancp",
-      "active": true
-    },
-    {
-      "name": "Bryce Tham",
-      "jira_email": "",
-      "github": "brycetham",
-      "active": true
-    },
-    {
-      "name": "Bin Xu",
-      "jira_email": "",
-      "github": "bxu2",
-      "active": true
-    },
-    {
-      "name": "Charles Burkett",
-      "jira_email": "",
-      "github": "chburket",
-      "active": true
-    },
-    {
-      "name": "chrisadubois",
-      "jira_email": "",
-      "github": "chrisadubois",
-      "active": true
-    },
-    {
       "name": "ciscoRankush",
-      "jira_email": "",
+      "jira_email": "rankkuma@cisco.com",
       "github": "ciscoRankush",
       "active": true
     },
     {
-      "name": "CM",
-      "jira_email": "",
-      "github": "cmullenx",
-      "active": true
-    },
-    {
-      "name": "Christoph Scheffauer",
-      "jira_email": "",
-      "github": "cscheffauer",
-      "active": true
-    },
-    {
-      "name": "d-birch",
-      "jira_email": "",
-      "github": "d-birch",
-      "active": true
-    },
-    {
-      "name": "damathie-cisco",
-      "jira_email": "",
-      "github": "damathie-cisco",
-      "active": true
-    },
-    {
-      "name": "Dominic Carrington",
-      "jira_email": "",
-      "github": "dominiccarrington",
-      "active": true
-    },
-    {
-      "name": "Edmond Vuji\u0107i",
-      "jira_email": "",
-      "github": "edvujic",
-      "active": true
-    },
-    {
       "name": "Sarang S",
-      "jira_email": "",
+      "jira_email": "sarangsa@cisco.com",
       "github": "eigengravy",
-      "active": true
-    },
-    {
-      "name": "Evan O'Connor",
-      "jira_email": "",
-      "github": "evaoconn",
-      "active": true
-    },
-    {
-      "name": "Cullen Jennings",
-      "jira_email": "",
-      "github": "fluffy",
-      "active": true
-    },
-    {
-      "name": "fsiyavud-cisco",
-      "jira_email": "",
-      "github": "fsiyavud-cisco",
-      "active": true
-    },
-    {
-      "name": "Gabriel Lee",
-      "jira_email": "",
-      "github": "gabrielchl",
-      "active": true
-    },
-    {
-      "name": "King Jin",
-      "jira_email": "",
-      "github": "georegejin",
-      "active": true
-    },
-    {
-      "name": "glreddy-wx",
-      "jira_email": "",
-      "github": "glreddy-wx",
-      "active": true
-    },
-    {
-      "name": "jbenyovs",
-      "jira_email": "",
-      "github": "jbenyovs",
-      "active": true
-    },
-    {
-      "name": "jenithainbaraj",
-      "jira_email": "",
-      "github": "jenithainbaraj",
-      "active": true
-    },
-    {
-      "name": "Jens Lehn S\u00f8rensen",
-      "jira_email": "",
-      "github": "jenssorensen",
-      "active": true
-    },
-    {
-      "name": "Jozef Harinek",
-      "jira_email": "",
-      "github": "jharinek",
-      "active": true
-    },
-    {
-      "name": "Jimmy",
-      "jira_email": "",
-      "github": "jimmycoyne",
-      "active": true
-    },
-    {
-      "name": "jjkusowski",
-      "jira_email": "",
-      "github": "jjkusowski",
-      "active": true
-    },
-    {
-      "name": "John Soter",
-      "jira_email": "",
-      "github": "johnsoter13",
-      "active": true
-    },
-    {
-      "name": "John Francis",
-      "jira_email": "",
-      "github": "johnwfrancis",
-      "active": true
-    },
-    {
-      "name": "Jordan Rowan",
-      "jira_email": "",
-      "github": "jor-row",
-      "active": true
-    },
-    {
-      "name": "Kacper Wa\u015bniowski",
-      "jira_email": "",
-      "github": "k-wasniowski",
-      "active": true
-    },
-    {
-      "name": "Felix Kaechele",
-      "jira_email": "",
-      "github": "kaechele",
-      "active": true
-    },
-    {
-      "name": "Kalyana",
-      "jira_email": "",
-      "github": "kalyankarunai",
-      "active": true
-    },
-    {
-      "name": "Pavol Karas",
-      "jira_email": "",
-      "github": "karaspa",
       "active": true
     },
     {
@@ -431,7 +187,7 @@
     },
     {
       "name": "Kesava Krishnan Madavan",
-      "jira_email": "",
+      "jira_email": "kmadavan@cisco.com",
       "github": "mkesavan13",
       "active": true
     },
@@ -509,25 +265,25 @@
     },
     {
       "name": "Rankush Kumar",
-      "jira_email": "",
+      "jira_email": "rankkuma@cisco.com",
       "github": "rankush",
       "active": true
     },
     {
       "name": "Rajesh Kumar",
-      "jira_email": "",
+      "jira_email": "rarajes2@cisco.com",
       "github": "rarajes2",
       "active": true
     },
     {
       "name": "riag23",
-      "jira_email": "",
+      "jira_email": "riag@cisco.com",
       "github": "riag23",
       "active": true
     },
     {
       "name": "Ritesh Singh",
-      "jira_email": "",
+      "jira_email": "ritsing3@cisco.com",
       "github": "riteshfyi",
       "active": true
     },
@@ -544,8 +300,8 @@
       "active": true
     },
     {
-      "name": "rsarika",
-      "jira_email": "",
+      "name": "Ravi chandra shekar sarika",
+      "jira_email": "rsarika@cisco.com",
       "github": "rsarika",
       "active": true
     },
@@ -557,7 +313,7 @@
     },
     {
       "name": "satyagrwl",
-      "jira_email": "",
+      "jira_email": "satagraw@cisco.com",
       "github": "satyagrwl",
       "active": true
     },
@@ -635,7 +391,7 @@
     },
     {
       "name": "Govardhana vamshi",
-      "jira_email": "",
+      "jira_email": "vgovardh@cisco.com",
       "github": "vamshigovardhana",
       "active": true
     },
