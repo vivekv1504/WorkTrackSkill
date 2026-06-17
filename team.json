@@ -1,0 +1,661 @@
+{
+  "team_name": "Webex JS SDK & Widgets",
+  "jira_base_url": "https://jira-eng-sjc12.cisco.com/jira",
+  "github_scope": "webex/*",
+  "members": [
+    {
+      "name": "Coread",
+      "jira_email": "",
+      "github": "Coread",
+      "active": true
+    },
+    {
+      "name": "HEM DUTT",
+      "jira_email": "",
+      "github": "HemDutt",
+      "active": true
+    },
+    {
+      "name": "Jahnavi314",
+      "jira_email": "",
+      "github": "Jahnavi314",
+      "active": true
+    },
+    {
+      "name": "Jan Podmajersky",
+      "jira_email": "",
+      "github": "JanPodmajersky",
+      "active": true
+    },
+    {
+      "name": "JudyZhu",
+      "jira_email": "",
+      "github": "JudyZhuHz",
+      "active": true
+    },
+    {
+      "name": "Kesari3008",
+      "jira_email": "",
+      "github": "Kesari3008",
+      "active": true
+    },
+    {
+      "name": "Shreyas Sharma",
+      "jira_email": "shreysh2@cisco.com",
+      "github": "Shreyas281299",
+      "active": true
+    },
+    {
+      "name": "Filip Nowakowski",
+      "jira_email": "",
+      "github": "SomeBody16",
+      "active": true
+    },
+    {
+      "name": "Waseemraj",
+      "jira_email": "",
+      "github": "Waseemraj",
+      "active": true
+    },
+    {
+      "name": "WeijuanShao",
+      "jira_email": "",
+      "github": "WeijuanShao",
+      "active": true
+    },
+    {
+      "name": "Adam Weeks",
+      "jira_email": "",
+      "github": "adamweeks",
+      "active": true
+    },
+    {
+      "name": "Adam Ranganathan",
+      "jira_email": "",
+      "github": "adaranga",
+      "active": true
+    },
+    {
+      "name": "Adhwaith Menon",
+      "jira_email": "",
+      "github": "adhmenon",
+      "active": true
+    },
+    {
+      "name": "Akshay Agarwal",
+      "jira_email": "",
+      "github": "akshayagarwaldev",
+      "active": true
+    },
+    {
+      "name": "akulakum",
+      "jira_email": "",
+      "github": "akulakum",
+      "active": true
+    },
+    {
+      "name": "Allen Jia",
+      "jira_email": "",
+      "github": "allen9918",
+      "active": true
+    },
+    {
+      "name": "Andi Wilson",
+      "jira_email": "",
+      "github": "andiwils",
+      "active": true
+    },
+    {
+      "name": "Ankit Batra",
+      "jira_email": "",
+      "github": "ankbat",
+      "active": true
+    },
+    {
+      "name": "ankibatr",
+      "jira_email": "",
+      "github": "ankibatr",
+      "active": true
+    },
+    {
+      "name": "Anna Tsukanova",
+      "jira_email": "",
+      "github": "antsukanova",
+      "active": true
+    },
+    {
+      "name": "Arun Ganeshan",
+      "jira_email": "",
+      "github": "arun3528",
+      "active": true
+    },
+    {
+      "name": "Ashish Das",
+      "jira_email": "",
+      "github": "ashish-cisco",
+      "active": true
+    },
+    {
+      "name": "Bala Obul Reddy Sangana",
+      "jira_email": "",
+      "github": "balasangana",
+      "active": true
+    },
+    {
+      "name": "bbaldino",
+      "jira_email": "",
+      "github": "bbaldino",
+      "active": true
+    },
+    {
+      "name": "Bharath Balan",
+      "jira_email": "",
+      "github": "bhabalan",
+      "active": true
+    },
+    {
+      "name": "Matthew",
+      "jira_email": "",
+      "github": "brain-frog",
+      "active": true
+    },
+    {
+      "name": "briancp",
+      "jira_email": "",
+      "github": "briancp",
+      "active": true
+    },
+    {
+      "name": "Bryce Tham",
+      "jira_email": "",
+      "github": "brycetham",
+      "active": true
+    },
+    {
+      "name": "Bin Xu",
+      "jira_email": "",
+      "github": "bxu2",
+      "active": true
+    },
+    {
+      "name": "Charles Burkett",
+      "jira_email": "",
+      "github": "chburket",
+      "active": true
+    },
+    {
+      "name": "chrisadubois",
+      "jira_email": "",
+      "github": "chrisadubois",
+      "active": true
+    },
+    {
+      "name": "ciscoRankush",
+      "jira_email": "",
+      "github": "ciscoRankush",
+      "active": true
+    },
+    {
+      "name": "CM",
+      "jira_email": "",
+      "github": "cmullenx",
+      "active": true
+    },
+    {
+      "name": "Christoph Scheffauer",
+      "jira_email": "",
+      "github": "cscheffauer",
+      "active": true
+    },
+    {
+      "name": "d-birch",
+      "jira_email": "",
+      "github": "d-birch",
+      "active": true
+    },
+    {
+      "name": "damathie-cisco",
+      "jira_email": "",
+      "github": "damathie-cisco",
+      "active": true
+    },
+    {
+      "name": "Dominic Carrington",
+      "jira_email": "",
+      "github": "dominiccarrington",
+      "active": true
+    },
+    {
+      "name": "Edmond Vuji\u0107i",
+      "jira_email": "",
+      "github": "edvujic",
+      "active": true
+    },
+    {
+      "name": "Sarang S",
+      "jira_email": "",
+      "github": "eigengravy",
+      "active": true
+    },
+    {
+      "name": "Evan O'Connor",
+      "jira_email": "",
+      "github": "evaoconn",
+      "active": true
+    },
+    {
+      "name": "Cullen Jennings",
+      "jira_email": "",
+      "github": "fluffy",
+      "active": true
+    },
+    {
+      "name": "fsiyavud-cisco",
+      "jira_email": "",
+      "github": "fsiyavud-cisco",
+      "active": true
+    },
+    {
+      "name": "Gabriel Lee",
+      "jira_email": "",
+      "github": "gabrielchl",
+      "active": true
+    },
+    {
+      "name": "King Jin",
+      "jira_email": "",
+      "github": "georegejin",
+      "active": true
+    },
+    {
+      "name": "glreddy-wx",
+      "jira_email": "",
+      "github": "glreddy-wx",
+      "active": true
+    },
+    {
+      "name": "jbenyovs",
+      "jira_email": "",
+      "github": "jbenyovs",
+      "active": true
+    },
+    {
+      "name": "jenithainbaraj",
+      "jira_email": "",
+      "github": "jenithainbaraj",
+      "active": true
+    },
+    {
+      "name": "Jens Lehn S\u00f8rensen",
+      "jira_email": "",
+      "github": "jenssorensen",
+      "active": true
+    },
+    {
+      "name": "Jozef Harinek",
+      "jira_email": "",
+      "github": "jharinek",
+      "active": true
+    },
+    {
+      "name": "Jimmy",
+      "jira_email": "",
+      "github": "jimmycoyne",
+      "active": true
+    },
+    {
+      "name": "jjkusowski",
+      "jira_email": "",
+      "github": "jjkusowski",
+      "active": true
+    },
+    {
+      "name": "John Soter",
+      "jira_email": "",
+      "github": "johnsoter13",
+      "active": true
+    },
+    {
+      "name": "John Francis",
+      "jira_email": "",
+      "github": "johnwfrancis",
+      "active": true
+    },
+    {
+      "name": "Jordan Rowan",
+      "jira_email": "",
+      "github": "jor-row",
+      "active": true
+    },
+    {
+      "name": "Kacper Wa\u015bniowski",
+      "jira_email": "",
+      "github": "k-wasniowski",
+      "active": true
+    },
+    {
+      "name": "Felix Kaechele",
+      "jira_email": "",
+      "github": "kaechele",
+      "active": true
+    },
+    {
+      "name": "Kalyana",
+      "jira_email": "",
+      "github": "kalyankarunai",
+      "active": true
+    },
+    {
+      "name": "Pavol Karas",
+      "jira_email": "",
+      "github": "karaspa",
+      "active": true
+    },
+    {
+      "name": "kirancisco",
+      "jira_email": "",
+      "github": "kirancisco",
+      "active": true
+    },
+    {
+      "name": "Kashyap Kambhatla",
+      "jira_email": "",
+      "github": "kkambhat",
+      "active": true
+    },
+    {
+      "name": "Kyle Liu",
+      "jira_email": "",
+      "github": "kliu",
+      "active": true
+    },
+    {
+      "name": "Krishna Swamy N A",
+      "jira_email": "",
+      "github": "knamoach",
+      "active": true
+    },
+    {
+      "name": "lego0110",
+      "jira_email": "",
+      "github": "lego0110",
+      "active": true
+    },
+    {
+      "name": "lialang-cisco",
+      "jira_email": "",
+      "github": "lialang-cisco",
+      "active": true
+    },
+    {
+      "name": "Lisa Smith",
+      "jira_email": "",
+      "github": "lismith2-cisco",
+      "active": true
+    },
+    {
+      "name": "mapennin",
+      "jira_email": "",
+      "github": "mapennin",
+      "active": true
+    },
+    {
+      "name": "Marcin",
+      "jira_email": "",
+      "github": "marcin-bazyl",
+      "active": true
+    },
+    {
+      "name": "Martin Roos",
+      "jira_email": "",
+      "github": "martroos",
+      "active": true
+    },
+    {
+      "name": "L\u00e1szl\u00f3 Vad\u00e1sz",
+      "jira_email": "",
+      "github": "maxinteger",
+      "active": true
+    },
+    {
+      "name": "Mayur Saxena",
+      "jira_email": "",
+      "github": "maysaxencisco",
+      "active": true
+    },
+    {
+      "name": "mickelr",
+      "jira_email": "",
+      "github": "mickelr",
+      "active": true
+    },
+    {
+      "name": "Kesava Krishnan Madavan",
+      "jira_email": "",
+      "github": "mkesavan13",
+      "active": true
+    },
+    {
+      "name": "muhamana",
+      "jira_email": "",
+      "github": "muhamana",
+      "active": true
+    },
+    {
+      "name": "Mukul Agarwal",
+      "jira_email": "",
+      "github": "mukuagar",
+      "active": true
+    },
+    {
+      "name": "namra25",
+      "jira_email": "",
+      "github": "namra25",
+      "active": true
+    },
+    {
+      "name": "Natalia del Mar",
+      "jira_email": "",
+      "github": "nataliadelmar",
+      "active": true
+    },
+    {
+      "name": "ndileep",
+      "jira_email": "",
+      "github": "ndileep",
+      "active": true
+    },
+    {
+      "name": "Oleksii Bondar",
+      "jira_email": "",
+      "github": "oleksiijko",
+      "active": true
+    },
+    {
+      "name": "perfect",
+      "jira_email": "",
+      "github": "perfect",
+      "active": true
+    },
+    {
+      "name": "Peter Cole",
+      "jira_email": "",
+      "github": "peter7cole",
+      "active": true
+    },
+    {
+      "name": "pharkuni",
+      "jira_email": "",
+      "github": "pharkuni",
+      "active": true
+    },
+    {
+      "name": "prajithnr",
+      "jira_email": "",
+      "github": "prajithnr",
+      "active": true
+    },
+    {
+      "name": "ralfschiffert",
+      "jira_email": "",
+      "github": "ralfschiffert",
+      "active": true
+    },
+    {
+      "name": "ramkrishnajana",
+      "jira_email": "",
+      "github": "ramkrishnajana",
+      "active": true
+    },
+    {
+      "name": "Rankush Kumar",
+      "jira_email": "",
+      "github": "rankush",
+      "active": true
+    },
+    {
+      "name": "Rajesh Kumar",
+      "jira_email": "",
+      "github": "rarajes2",
+      "active": true
+    },
+    {
+      "name": "riag23",
+      "jira_email": "",
+      "github": "riag23",
+      "active": true
+    },
+    {
+      "name": "Ritesh Singh",
+      "jira_email": "",
+      "github": "riteshfyi",
+      "active": true
+    },
+    {
+      "name": "rj100189",
+      "jira_email": "",
+      "github": "rj100189",
+      "active": true
+    },
+    {
+      "name": "robstax",
+      "jira_email": "",
+      "github": "robstax",
+      "active": true
+    },
+    {
+      "name": "rsarika",
+      "jira_email": "",
+      "github": "rsarika",
+      "active": true
+    },
+    {
+      "name": "ruiqichen",
+      "jira_email": "",
+      "github": "ruiqichen",
+      "active": true
+    },
+    {
+      "name": "satyagrwl",
+      "jira_email": "",
+      "github": "satyagrwl",
+      "active": true
+    },
+    {
+      "name": "shivani1211",
+      "jira_email": "",
+      "github": "shivani1211",
+      "active": true
+    },
+    {
+      "name": "shnaaz",
+      "jira_email": "",
+      "github": "shnaaz",
+      "active": true
+    },
+    {
+      "name": "sokn-sys",
+      "jira_email": "",
+      "github": "sokn-sys",
+      "active": true
+    },
+    {
+      "name": "Sreekanth Narayanan",
+      "jira_email": "",
+      "github": "sreenara",
+      "active": true
+    },
+    {
+      "name": "stevem63",
+      "jira_email": "",
+      "github": "stevem63",
+      "active": true
+    },
+    {
+      "name": "Sunil Gupta",
+      "jira_email": "",
+      "github": "sunilgupta01",
+      "active": true
+    },
+    {
+      "name": "Suraj Mallenahalli Shivu",
+      "jira_email": "",
+      "github": "suraj-shivu",
+      "active": true
+    },
+    {
+      "name": "Jakub Suriak",
+      "jira_email": "",
+      "github": "suriakub",
+      "active": true
+    },
+    {
+      "name": "Bartosz Habrajski",
+      "jira_email": "",
+      "github": "szotrabh",
+      "active": true
+    },
+    {
+      "name": "Taylor Hanson",
+      "jira_email": "",
+      "github": "tahanson-cisco",
+      "active": true
+    },
+    {
+      "name": "Catalin Torge",
+      "jira_email": "",
+      "github": "torgeadelin",
+      "active": true
+    },
+    {
+      "name": "urmitchauhan",
+      "jira_email": "",
+      "github": "urmitchauhan",
+      "active": true
+    },
+    {
+      "name": "Govardhana vamshi",
+      "jira_email": "",
+      "github": "vamshigovardhana",
+      "active": true
+    },
+    {
+      "name": "Vintha Vivekananda",
+      "jira_email": "vinvivek@cisco.com",
+      "github": "vivekv1504",
+      "active": true
+    },
+    {
+      "name": "yasixi",
+      "jira_email": "",
+      "github": "yasixi",
+      "active": true
+    },
+    {
+      "name": "Zachary Raymer",
+      "jira_email": "",
+      "github": "zachraymer",
+      "active": true
+    }
+  ]
+}
