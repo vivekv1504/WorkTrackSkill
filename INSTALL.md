@@ -120,6 +120,79 @@ Jira data requires **some** authenticated access. Pick one method:
 4. **Never commit tokens** to git — MCP settings only
 5. Toggle MCP servers **On**, reload Cursor, connect VPN if needed
 
+> **Important:** Cursor reads `~/.cursor/mcp.json`. That file is **not** used by Claude Code CLI.
+
+### Method A2: Jira MCP in Claude Code CLI (required for Jira in terminal)
+
+Claude CLI does **not** read `~/.cursor/mcp.json`. Configure Jira separately using **one** of these:
+
+#### Option 1 — CLI (recommended)
+
+Set your token once in the shell (same token as Cursor MCP):
+
+```bash
+export JIRA_API_TOKEN="your-jira-api-token"
+
+claude mcp add --transport http -s user jira-sjc12 \
+  https://aicoding-mcp.cisco.com/jira-sjc12/ \
+  --header "X-JIRA-TOKEN: ${JIRA_API_TOKEN}"
+
+claude mcp add --transport http -s user jira \
+  https://aicoding-mcp.cisco.com/jira/ \
+  --header "X-JIRA-TOKEN: ${JIRA_API_TOKEN}"
+```
+
+Verify:
+
+```bash
+claude mcp list
+```
+
+Start a **new** Claude Code session, then run `/work-track`.
+
+#### Option 2 — Project `.mcp.json`
+
+In your project folder (e.g. `~/Desktop/work_skill/`):
+
+```bash
+cp .mcp.json.example .mcp.json   # from WorkTrackSkill repo
+export JIRA_API_TOKEN="your-token"
+```
+
+The example uses `${JIRA_API_TOKEN}` — do not hardcode tokens in git.
+
+#### Option 3 — Env vars in `~/.claude/settings.json`
+
+Add under `"env"` (works with `fetch_jira.py` fallback):
+
+```json
+"env": {
+  "JIRA_USER_EMAIL": "you@cisco.com",
+  "JIRA_API_TOKEN": "${JIRA_API_TOKEN}",
+  "JIRA_BASE_URL": "https://jira-eng-sjc12.cisco.com/jira"
+}
+```
+
+Also add to `~/.zshrc`:
+
+```bash
+export JIRA_API_TOKEN="your-jira-api-token"
+export JIRA_USER_EMAIL="you@cisco.com"
+export JIRA_BASE_URL="https://jira-eng-sjc12.cisco.com/jira"
+```
+
+Restart Claude Code after editing settings.
+
+#### Cursor vs Claude — config locations
+
+| Tool | Jira MCP config file | Skill folder |
+|------|----------------------|--------------|
+| **Cursor** | `~/.cursor/mcp.json` | `~/.cursor/skills/work-track/` |
+| **Claude CLI** | `~/.claude.json` (user scope) or project `.mcp.json` | `~/.claude/skills/work-track/` |
+| **Claude env fallback** | `~/.claude/settings.json` → `"env"` | — |
+
+If Claude shows *"JIRA_API_TOKEN not configured"* but Cursor Jira works, you only configured **Cursor** — add MCP or env vars for **Claude CLI** using the steps above.
+
 ### Method B: Environment variables + script
 
 Add to `~/.zshrc`:
@@ -239,6 +312,7 @@ cp ~/Desktop/work_track_skill/team.json ~/.cursor/skills/work-track/team.json
 | Skill not triggering | Restart IDE; say "work track" explicitly |
 | Jira `fetch failed` | Refresh MCP; check VPN; rotate token |
 | GitHub MCP 401 | Use `gh` CLI instead of GitHub MCP |
+| **Claude CLI: no Jira, Cursor works** | Add Jira MCP to Claude (`claude mcp add`) or set `JIRA_API_TOKEN` in `~/.claude/settings.json` — see Method A2 |
 | No Jira data, GitHub works | Expected without token — add Jira MCP |
 | Hidden `.claude` folder | Finder: `Cmd+Shift+G` → `~/.claude/skills/work-track/` |
 | Member missing from report | Add `jira_email` and `github` in `team.json` |

@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "jira-sjc12": {
+      "type": "http",
+      "url": "https://aicoding-mcp.cisco.com/jira-sjc12/",
+      "headers": {
+        "X-JIRA-TOKEN": "${JIRA_API_TOKEN}"
+      }
+    },
+    "jira": {
+      "type": "http",
+      "url": "https://aicoding-mcp.cisco.com/jira/",
+      "headers": {
+        "X-JIRA-TOKEN": "${JIRA_API_TOKEN}"
+      }
+    }
+  }
+}
