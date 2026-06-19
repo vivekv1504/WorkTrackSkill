@@ -42,7 +42,7 @@ Team members use `github` (not `github_username`) in [team.json](team.json) for 
 - [ ] Step 1b: Resolve target user (name / CEC ID lookup)
 - [ ] Step 2:  Resolve date range
 - [ ] Step 3a: Fetch Jira — SJC12 board (CAI)
-- [ ] Step 3b: Fetch Jira — GPK2 board (SPARK) via MCP → fallback Playwright
+- [ ] Step 3b: Fetch Jira — GPK2 board (SPARK) via MCP
 - [ ] Step 4:  Fetch GitHub activity (skip if Jira-only mode)
 - [ ] Step 5:  Build report + flag stale items
 ```
@@ -104,9 +104,7 @@ jql: assignee = "EMAIL" AND project = CAI AND status changed to Done DURING ("ST
 
 ### Step 3b — Jira GPK2 board (SPARK)
 
-**Try MCP first, fall back to Playwright if it fails.**
-
-#### Primary: `mcp__jira` MCP tool
+Use `mcp__jira` MCP tool only.
 
 ```
 endpoint: /search
@@ -117,43 +115,7 @@ params:
   maxResults: 50
 ```
 
-If the MCP call returns a 401, 429, or any auth error → **immediately fall back to Playwright**.
-
-#### Fallback: Playwright browser scraping
-
-Use Playwright MCP tools to scrape GPK2 when the MCP token fails.
-
-**Step-by-step:**
-
-1. **Navigate to the GPK2 Jira issue search for the user:**
-   ```
-   URL: https://jira-eng-gpk2.cisco.com/jira/issues/?jql=assignee%3D%22{CEC_ID}%22%20AND%20project%3DSPARK%20AND%20updated%3E%3D%22{START}%22%20ORDER%20BY%20updated%20DESC
-   ```
-   Replace `{CEC_ID}` with the bare CEC ID (e.g. `rsarika`) and `{START}` with the start date.
-
-2. **Take a screenshot** to confirm the page loaded and the user is logged in (SSO).
-   - If login page appears → tell the user: *"Please log into jira-eng-gpk2.cisco.com in your browser and retry."*
-   - If issue list appears → proceed.
-
-3. **Take a snapshot** of the page to read ticket data.
-
-4. **Extract from each row:**
-   - Ticket key (e.g. `SPARK-1234`)
-   - Summary
-   - Status
-   - Updated date
-   - Priority (if visible)
-
-5. **Navigate to next page** if pagination is present (click "Next" or change `startAt` in the URL) and repeat until all results within the date range are collected.
-
-6. **For resolved tickets:** also run the search:
-   ```
-   URL: https://jira-eng-gpk2.cisco.com/jira/issues/?jql=assignee%3D%22{CEC_ID}%22%20AND%20project%3DSPARK%20AND%20status%20changed%20to%20Done%20DURING%20(%22{START}%22%2C%20%22{END}%22)
-   ```
-
-7. Build ticket list in same format as SJC12 results.
-
-**Playwright tools to use:** `mcp__plugin_playwright_playwright__browser_navigate`, `mcp__plugin_playwright_playwright__browser_snapshot`, `mcp__plugin_playwright_playwright__browser_take_screenshot`, `mcp__plugin_playwright_playwright__browser_click`
+If the MCP call returns a 401 or auth error → inform the user: *"GPK2 data unavailable — the PAT token for mcp__jira is expired. Please regenerate it in MCP settings."* Report SJC12 data only.
 
 ---
 
@@ -320,9 +282,8 @@ python3 ~/.claude/skills/productivity-tracker/scripts/generate_team_report.py --
 ## Error handling
 
 - Missing auth: list required env vars; link to [CONFIG.md](CONFIG.md)
-- GPK2 MCP auth failure: automatically fall back to Playwright scraping (Step 3b)
-- Playwright: if login page shown, prompt user to log in via SSO and retry
-- Partial data: report what's available, label source (MCP vs browser)
+- GPK2 MCP auth failure: report SJC12 data only, tell user to regenerate the PAT token in MCP settings
+- Partial data: report what's available, note which board failed
 - One team member fails: skip, note failure, continue
 - No activity: say clearly — don't emit empty template
 
