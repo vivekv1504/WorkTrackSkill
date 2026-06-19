@@ -1,6 +1,6 @@
 ---
 name: work-track
-description: Tracks engineering work from Jira (comments, status transitions, resolved/open tickets) and GitHub (PRs opened, closed, merged, reviews). Generates individual or team activity reports. Reads and updates ~/.claude/skills/work-track/config.json and team.json. Use whenever the user asks for work tracking, activity summary, sprint review, what they did this week, Jira/GitHub stats, open PRs, team leaderboard, or to add/update team members or Jira projects — even if they don't say "work-track" explicitly.
+description: Tracks engineering work from Jira (comments, status transitions, resolved/open tickets) and GitHub (PRs opened, closed, merged, reviews). Generates individual or team activity reports. Reads and updates ~/.claude/skills/work-track/config.json and team.json. Use whenever the user asks for work tracking, activity summary, sprint review, what they did this week, Jira/GitHub stats, open PRs, team leaderboard, to add/update team members or Jira projects, or to get a Jira summary for a CEC ID — even if they don't say "work-track" explicitly. Also resolves a report target when the user provides a name or CEC ID (e.g. "show me shreysh2's work" or "report for Shreyas Sharma").
 ---
 
 # Work Track
@@ -17,6 +17,7 @@ Track activity across **Jira** (comments, status changes, tickets) and **GitHub*
 |------|---------|
 | **Individual** | "my work", "what did I do", single person |
 | **Team** | "my team", "team report", manager view |
+| **Jira-only** | "Jira summary", "tickets for CEC ID", manager asking about Jira only |
 
 Default period: **last 14 days** from [config.json](config.json) → `defaults.period_days`. Accept natural language dates.
 
@@ -37,55 +38,130 @@ Team members use `github` (not `github_username`) in [team.json](team.json) for 
 ## Workflow
 
 ```
-- [ ] Step 1: Load config.json + team.json (if team mode)
-- [ ] Step 2: Resolve date range
-- [ ] Step 3: Fetch Jira activity
-- [ ] Step 4: Fetch GitHub activity
-- [ ] Step 5: Build report + flag stale items
+- [ ] Step 1:  Load config.json + team.json
+- [ ] Step 1b: Resolve target user (name / CEC ID lookup)
+- [ ] Step 2:  Resolve date range
+- [ ] Step 3a: Fetch Jira — SJC12 board (CAI)
+- [ ] Step 3b: Fetch Jira — GPK2 board (SPARK) via MCP → fallback Playwright
+- [ ] Step 4:  Fetch GitHub activity (skip if Jira-only mode)
+- [ ] Step 5:  Build report + flag stale items
 ```
 
 ### Step 1 — Load config
 
 Read `~/.claude/skills/work-track/config.json` for defaults. For team reports, read `team.json` and iterate `members[]` where `active !== false`.
 
+---
+
+### Step 1b — Resolve target user (name / CEC ID)
+
+If the user's prompt names a specific person (not "me", "my", "I", or "team"), resolve them before fetching data:
+
+1. **CEC ID / email match** — if the input looks like an email (`@cisco.com`) or a bare CEC ID (no spaces, no `@`), match against `jira_email` (the part before `@`) or `github` in `team.json`. Case-insensitive.
+   - `shreysh2` → matches member with `jira_email: "shreysh2@cisco.com"`
+   - `shreysh2@cisco.com` → same member
+2. **Display name match** — if the input has spaces or doesn't match a CEC/email, do a case-insensitive substring match against `name` in `team.json`.
+   - `Shreyas` → matches `"Shreyas Sharma"`
+3. **No match** — inform the user the person was not found in `team.json` and list close matches (partial name matches). Offer to add them.
+4. **Ambiguous** — if multiple members match, list them and ask the user to clarify.
+
+Once resolved, use that member's `jira_email` and `github` fields as the target user for Steps 3–5 instead of the default user from `config.json`.
+
+**Examples:**
+- "work report for shreysh2" → resolve to Shreyas Sharma → `jira_email: shreysh2@cisco.com`, `github: Shreyas281299`
+- "what did adweeks do this week" → resolve to Adam Weeks → `jira_email: adweeks@cisco.com`, `github: adamweeks`
+- "Jira summary for rsarika" → resolve to Ravi chandra shekar sarika → Jira-only mode, both boards
+
+---
+
 ### Step 2 — Dates
 
 Compute `START_DATE` and `END_DATE` as `YYYY-MM-DD` (inclusive).
 
-### Step 3 — Jira
+---
+
+### Step 3a — Jira SJC12 board (CAI)
 
 **Priority:**
-1. Jira MCP tool (if available in this session)
-2. `fetch_jira.py` script
-3. curl REST API
+1. `mcp__jira-sjc12` MCP tool (primary)
+2. curl REST API with `JIRA_API_TOKEN`
 
-```bash
-# Script (recommended)
-python3 ~/.claude/skills/productivity-tracker/scripts/fetch_jira.py \
-  --user "$JIRA_EMAIL" --start "$START" --end "$END" \
-  --base-url "$JIRA_BASE_URL" --token "$JIRA_API_TOKEN" \
-  --output /tmp/work-track-jira.json
+```
+endpoint: /search
+method: GET
+params:
+  jql: assignee = "EMAIL" AND project = CAI AND updated >= "START" ORDER BY updated DESC
+  fields: summary,status,priority,updated,resolutiondate
+  maxResults: 50
 ```
 
-**JQL** (substitute email, dates, projects from config):
-
-```jql
-assignee = "vinvivek@cisco.com" AND status != Done ORDER BY updated DESC
-assignee = "vinvivek@cisco.com" AND status changed to Done DURING ("START", "END")
-project in (CAI) AND updated >= "START" ORDER BY updated DESC
+Resolved tickets:
+```
+jql: assignee = "EMAIL" AND project = CAI AND status changed to Done DURING ("START", "END")
 ```
 
-**Multi-board:** Read `jira_boards[]` in [config.json](config.json).
-- **CAI** → `mcp_jira-sjc12` (`jira-eng-sjc12`)
-- **GPK / SPARK** → `mcp_jira` via `https://aicoding-mcp.cisco.com/jira/` (token in MCP settings only)
+---
 
-Board: [rapidView=10147](https://jira-eng-gpk2.cisco.com/jira/secure/RapidBoard.jspa?rapidView=10147) · Project: `SPARK`
+### Step 3b — Jira GPK2 board (SPARK)
 
-For transitions/comments: fetch issue changelog and comments per ticket. See [reference.md](reference.md).
+**Try MCP first, fall back to Playwright if it fails.**
 
-**Auth:** `JIRA_BASE_URL`, `JIRA_USER_EMAIL`, `JIRA_API_TOKEN` env vars.
+#### Primary: `mcp__jira` MCP tool
 
-### Step 4 — GitHub
+```
+endpoint: /search
+method: GET
+params:
+  jql: assignee = "EMAIL" AND project = SPARK AND updated >= "START" ORDER BY updated DESC
+  fields: summary,status,priority,updated,resolutiondate
+  maxResults: 50
+```
+
+If the MCP call returns a 401, 429, or any auth error → **immediately fall back to Playwright**.
+
+#### Fallback: Playwright browser scraping
+
+Use Playwright MCP tools to scrape GPK2 when the MCP token fails.
+
+**Step-by-step:**
+
+1. **Navigate to the GPK2 Jira issue search for the user:**
+   ```
+   URL: https://jira-eng-gpk2.cisco.com/jira/issues/?jql=assignee%3D%22{CEC_ID}%22%20AND%20project%3DSPARK%20AND%20updated%3E%3D%22{START}%22%20ORDER%20BY%20updated%20DESC
+   ```
+   Replace `{CEC_ID}` with the bare CEC ID (e.g. `rsarika`) and `{START}` with the start date.
+
+2. **Take a screenshot** to confirm the page loaded and the user is logged in (SSO).
+   - If login page appears → tell the user: *"Please log into jira-eng-gpk2.cisco.com in your browser and retry."*
+   - If issue list appears → proceed.
+
+3. **Take a snapshot** of the page to read ticket data.
+
+4. **Extract from each row:**
+   - Ticket key (e.g. `SPARK-1234`)
+   - Summary
+   - Status
+   - Updated date
+   - Priority (if visible)
+
+5. **Navigate to next page** if pagination is present (click "Next" or change `startAt` in the URL) and repeat until all results within the date range are collected.
+
+6. **For resolved tickets:** also run the search:
+   ```
+   URL: https://jira-eng-gpk2.cisco.com/jira/issues/?jql=assignee%3D%22{CEC_ID}%22%20AND%20project%3DSPARK%20AND%20status%20changed%20to%20Done%20DURING%20(%22{START}%22%2C%20%22{END}%22)
+   ```
+
+7. Build ticket list in same format as SJC12 results.
+
+**Playwright tools to use:** `mcp__plugin_playwright_playwright__browser_navigate`, `mcp__plugin_playwright_playwright__browser_snapshot`, `mcp__plugin_playwright_playwright__browser_take_screenshot`, `mcp__plugin_playwright_playwright__browser_click`
+
+---
+
+### Step 4 — GitHub (skip in Jira-only mode)
+
+**Jira-only mode** is active when:
+- User says "Jira summary", "tickets only", or "just Jira"
+- Manager explicitly asks for Jira data for a CEC ID without mentioning GitHub
 
 **Priority:**
 1. `gh` CLI (primary)
@@ -105,12 +181,7 @@ gh search prs --reviewed-by "$USER" --updated "$START..$END" \
   --json number,title,url,repository
 ```
 
-Or script:
-```bash
-python3 ~/.claude/skills/productivity-tracker/scripts/fetch_github.py \
-  --user "$USER" --start "$START" --end "$END" \
-  --scope "*" --output /tmp/work-track-github.json
-```
+---
 
 ### Step 5 — Team batch (optional)
 
@@ -136,7 +207,9 @@ Flag stale items: Jira/PR open 3+ days without movement.
 
 ---
 
-## Report Template
+## Report Templates
+
+### Full report (Jira + GitHub)
 
 ```markdown
 # Work Track — [Name]
@@ -175,6 +248,47 @@ Flag stale items: Jira/PR open 3+ days without movement.
 - [Stale item]
 ```
 
+### Jira-only report (both boards)
+
+```markdown
+# Jira Summary — [Name] ([CEC ID])
+**Period:** [START] → [END]
+
+## Summary
+[2–3 sentences covering activity across both boards]
+
+## SJC12 — CAI Board
+| Metric | Count |
+|--------|------:|
+| Tickets resolved | |
+| Open assigned tickets | |
+| Updated in period | |
+
+### Resolved
+- [CAI-KEY summary](https://jira-eng-sjc12.cisco.com/jira/browse/CAI-KEY) — status — date
+
+### Open / In Progress
+- [CAI-KEY summary](url) — status — last updated
+
+## GPK2 — SPARK Board
+| Metric | Count |
+|--------|------:|
+| Tickets resolved | |
+| Open assigned tickets | |
+| Updated in period | |
+
+### Resolved
+- [SPARK-KEY summary](https://jira-eng-gpk2.cisco.com/jira/browse/SPARK-KEY) — status — date
+
+### Open / In Progress
+- [SPARK-KEY summary](url) — status — last updated
+
+## Needs attention
+- [Tickets stale 3+ days]
+```
+
+---
+
 ## Team report extras
 
 ```markdown
@@ -206,7 +320,9 @@ python3 ~/.claude/skills/productivity-tracker/scripts/generate_team_report.py --
 ## Error handling
 
 - Missing auth: list required env vars; link to [CONFIG.md](CONFIG.md)
-- Partial data: report what's available
+- GPK2 MCP auth failure: automatically fall back to Playwright scraping (Step 3b)
+- Playwright: if login page shown, prompt user to log in via SSO and retry
+- Partial data: report what's available, label source (MCP vs browser)
 - One team member fails: skip, note failure, continue
 - No activity: say clearly — don't emit empty template
 
