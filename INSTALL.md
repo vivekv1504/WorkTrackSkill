@@ -34,7 +34,21 @@ Unzip or copy the `work_track_skill` folder shared by your team lead.
 
 ## Step 2 — Install into your skills folder
 
-### Cursor
+### Recommended — use the install script
+
+```bash
+cd WorkTrackSkill
+./install.sh
+```
+
+This copies all skill files to `~/.claude/skills/work-track/` and prints:
+```
+Installed to ~/.claude/skills/work-track
+```
+
+Restart Claude Code after running.
+
+### Manual — Cursor
 
 ```bash
 mkdir -p ~/.cursor/skills/work-track
@@ -43,7 +57,7 @@ cp -r WorkTrackSkill/* ~/.cursor/skills/work-track/
 
 Restart Cursor or start a new Agent chat.
 
-### Claude Code (CLI)
+### Manual — Claude Code (CLI)
 
 ```bash
 mkdir -p ~/.claude/skills/work-track
