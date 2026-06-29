@@ -13,6 +13,8 @@ Install the skill locally on your machine. Each person runs their own copy with 
 | **Cursor** or **Claude Code** | Running the skill | Your IDE / CLI |
 | **GitHub CLI** (`gh`) | PR stats, team GitHub activity | `brew install gh` then `gh auth login` |
 | **Jira MCP** (optional) | Ticket status, active assignments, Jira comments | Cursor MCP settings + Cisco Jira token |
+| **Confluence client skill** (optional) | Read-only pages, comments, mentions, action items | Install `confluence-client` skill |
+| **Internal Webex CLI skill** | Messaging catch-up, meetings, live transcripts, artifacts, calendar routing, team check-ins | Install/enable using your internal Webex CLI skill setup |
 | **Cisco VPN** | Jira MCP / internal Jira | Connect when querying Jira |
 
 ---
@@ -98,6 +100,89 @@ gh auth status
 ```
 
 No extra token file needed — `gh` stores credentials in your OS keychain.
+
+---
+
+## Step 4a — Confluence client skill auth/setup (optional, read-only)
+
+Confluence is an optional read-only source for work-track. It uses the `confluence-client` skill to search pages, comments, mentions, and action items. Work-track must never create, edit, delete, or comment on Confluence pages.
+
+Install for Codex:
+
+```bash
+npx --registry=https://engci-maven-master.cisco.com/artifactory/api/npm/WebExDev-ai-transformation-npm/ @cisco-aifirst/installer --codex --skills confluence-client
+```
+
+Install for Claude Code:
+
+```bash
+npx --registry=https://engci-maven-master.cisco.com/artifactory/api/npm/WebExDev-ai-transformation-npm/ @cisco-aifirst/installer --claude --skills confluence-client
+```
+
+If install fails with `404` or timeout, confirm Cisco VPN and Artifactory access.
+
+Keep this in `config.json`:
+
+```json
+"confluence": {
+  "enabled": true,
+  "required": false,
+  "read_only": true,
+  "skill": "confluence-client",
+  "identity_field": "jira_email",
+  "spaces": [],
+  "search_pages": true,
+  "search_comments": true,
+  "search_mentions": true,
+  "search_action_items": true
+}
+```
+
+No Confluence tokens should be stored in this repository, `config.json`, or `team.json`.
+
+---
+
+## Step 4b — Webex CLI skill auth (required)
+
+Webex CLI is required for complete work-track reports. Work-track does not own Webex authentication; it uses the internal Webex CLI skill for messages, meetings, live transcripts, artifacts, calendar routing, and team check-in signals.
+
+Use your internal Webex CLI skill setup to authenticate and verify these capabilities:
+
+- Search spaces and read recent messages
+- Read configured team check-in and code review spaces
+- List meeting history by date range and timezone
+- Read live transcripts when explicitly requested
+- Download/read meeting transcripts, summaries, recordings, and chat logs
+- Query upcoming/recent calendar meetings
+- Enrich results with linked Confluence pages and Jira issues
+- Correlate Webex PR review requests with GitHub PR metadata
+
+No Webex tokens should be stored in this repository, `config.json`, or `team.json`.
+
+Keep this in `config.json`:
+
+```json
+"webex": {
+  "enabled": true,
+  "required": true,
+  "include_by_default": true,
+  "timezone": "Asia/Kolkata",
+  "identity_field": "jira_email",
+  "spaces": {
+    "team_checkin": [],
+    "code_review": [],
+    "release": [],
+    "blockers": [],
+    "general": []
+  },
+  "pr_review_thresholds": {
+    "large_pr_lines": 1500,
+    "stale_review_days": 3
+  }
+}
+```
+
+Populate `spaces` with Webex space names or IDs for your team. `code_review` spaces are used to find messages like "please review this PR"; GitHub is then queried to flag oversized PRs such as changes over 1500 lines.
 
 ---
 
@@ -260,7 +345,7 @@ Edit `team.json` for team reports:
 }
 ```
 
-Members without `jira_email` still appear in **GitHub-only** parts of team reports.
+Members without `jira_email` still appear in team reports with GitHub/Confluence/Webex data; Jira fields are marked unavailable for that member.
 
 ---
 
@@ -274,15 +359,16 @@ In Cursor or Claude:
 
 Or:
 
-- *"Track my work last 2 weeks"*
-- *"Active tickets for Rajesh Kumar on CAI and SPARK"*
+- *"Track my weekly work"*
+- *"Track my bi-weekly work for sync"*
+- *"Work report from 2026-06-01 to 2026-06-15"*
 - *"Team work report"*
 
 ---
 
-## Can I use Work Track **without** a Jira access token?
+## What happens if Jira access is unavailable?
 
-**Short answer:** Yes for **GitHub-only** reports. **No** for live Jira ticket data.
+Work Track builds one work summary and action-items report from all configured sources. If Jira access is unavailable, the report should continue with GitHub/Confluence/Webex data and clearly mark Jira as unavailable.
 
 | Feature | Without Jira token | With Jira token |
 |---------|:------------------:|:---------------:|
@@ -290,28 +376,31 @@ Or:
 | PR reviews, GitHub leaderboard | Yes | Yes |
 | Active assigned Jira tickets | No | Yes |
 | Jira status transitions, comments | No | Yes |
-| Team report (GitHub metrics) | Partial | Full |
-| Team report (Jira per person) | Only if member has no Jira needed | Yes |
+| Work summary/action items | Partial; Jira unavailable noted | Full |
+| Team report | Partial; Jira unavailable noted | Full |
 
-### What works without Jira token
+### What still works without Jira token
 
-1. **Individual GitHub report** — after `gh auth login`:
+1. **GitHub activity** — after `gh auth login`:
    - PRs opened, merged, closed, open PRs
    - Review activity (where `gh search` allows)
 
-2. **Partial team report** — GitHub stats per `team.json` member who has a `github` username; Jira columns show as unavailable.
+2. **Webex activity** — after Webex CLI auth/sync:
+   - Messages, meetings, transcripts, tagged questions, code review requests, action items
 
-3. **Demo / sample output** (no real data):
+3. **Partial team report** — GitHub/Confluence/Webex data per member; Jira columns show as unavailable.
+
+4. **Demo / sample output** (no real data):
 
    ```bash
    python3 ~/.claude/skills/productivity-tracker/scripts/generate_report.py --demo
    ```
 
-4. **Manual paste** — you can paste Jira ticket lists into chat; the agent formats them but does not fetch live data.
+5. **Manual paste** — you can paste Jira ticket lists into chat; the agent formats them but does not fetch live data.
 
 ### What does **not** work without Jira auth
 
-- Automated queries like *"active tickets for Rajesh on CAI and SPARK"*
+- Automated Jira ticket queries for private Cisco Jira
 - Jira MCP tools (`mcp_jira`, `mcp_jira-sjc12`)
 - `fetch_jira.py` without `JIRA_API_TOKEN`
 
@@ -321,9 +410,10 @@ There is no way to read **private** Cisco Jira anonymously — you need either a
 
 | Goal | Minimum setup |
 |------|----------------|
-| GitHub work report only | Skill install + `config.json` + `gh auth login` |
-| Full Jira + GitHub | Above + Jira MCP token or `JIRA_API_TOKEN` |
-| Team reports (full) | Above + `team.json` with `jira_email` per member |
+| Partial work summary | Skill install + `config.json` + `gh auth login` + Webex CLI auth/sync |
+| Confluence-enriched work summary | Above + `confluence-client` skill |
+| Full work summary + action items | Above + Jira MCP token or `JIRA_API_TOKEN` |
+| Team reports | Above + `team.json` with `jira_email` and `github` per member |
 
 ---
 
