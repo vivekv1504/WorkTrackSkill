@@ -1,13 +1,18 @@
 ---
 name: work-track
-description: Tracks engineering work from Jira (comments, status transitions, resolved/open tickets), GitHub (PRs opened, closed, merged, reviews), read-only Confluence context (pages, comments, mentions, action items), and mandatory Webex context (messages, meetings, transcripts, artifacts). Generates individual or team work summaries and action items. Reads and updates ~/.claude/skills/work-track/config.json and team.json. Use whenever the user asks for work tracking, activity summary, sprint review, what they did this week, Jira/GitHub/Confluence stats, open PRs, team leaderboard, Webex catch-up, meeting follow-up, unanswered Webex questions, team space check-in, action items, to add/update team members or Jira projects, or to get a Jira/Webex/Confluence summary for a CEC ID — even if they don't say "work-track" explicitly. Also resolves a report target when the user provides a name or CEC ID (e.g. "show me shreysh2's work" or "report for Shreyas Sharma").
+description: Tracks engineering work from Jira (comments, status transitions, resolved/open tickets), GitHub (PRs opened, closed, merged, reviews), read-only Confluence context (pages, comments, mentions, action items), and mandatory Webex context (messages, meetings, transcripts, artifacts). Generates individual or team work summaries and action items. Must be installed and configured for both Claude Code and Codex; reads and updates the active runtime's work-track config.json and team.json. Use whenever the user asks for work tracking, activity summary, sprint review, what they did this week, Jira/GitHub/Confluence stats, open PRs, team leaderboard, Webex catch-up, meeting follow-up, unanswered Webex questions, team space check-in, action items, to add/update team members or Jira projects, or to get a Jira/Webex/Confluence summary for a CEC ID — even if they don't say "work-track" explicitly. Also resolves a report target when the user provides a name or CEC ID (e.g. "show me shreysh2's work" or "report for Shreyas Sharma").
 ---
 
 # Work Track
 
-Claude Code skill for Jira + GitHub + Confluence + Webex work reports.
+Claude Code and Codex skill for Jira + GitHub + Confluence + Webex work reports.
 
-**Skill directory:** `~/.claude/skills/work-track/`
+**Mandatory skill directories:**
+
+- Claude Code: `~/.claude/skills/work-track/`
+- Codex: `~/.agents/skills/work-track/`
+
+Keep both copies installed and configured with the same `config.json` and `team.json`. If only one runtime is configured, reports may differ or miss data depending on where the skill is run.
 
 Track activity across **Jira** (comments, status changes, tickets), **GitHub** (PRs opened/closed/merged, reviews), read-only **Confluence** context (pages, comments, mentions, action items), and mandatory **Webex CLI** context (spaces, messages, meetings, transcripts, artifacts). Produce readable reports for one person or a team.
 
@@ -55,7 +60,12 @@ Team members use `github` (not `github_username`) in [team.json](team.json) for 
 
 ### Step 1 — Load config
 
-Read `~/.claude/skills/work-track/config.json` for defaults. For team reports, read `team.json` and iterate `members[]` where `active !== false`.
+Read the active runtime's `work-track/config.json` for defaults:
+
+- Claude Code: `~/.claude/skills/work-track/config.json`
+- Codex: `~/.agents/skills/work-track/config.json`
+
+For team reports, read the matching `team.json` from the same runtime directory and iterate `members[]` where `active !== false`.
 
 ---
 

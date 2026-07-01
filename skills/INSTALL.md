@@ -10,9 +10,9 @@ Install the skill locally on your machine. Each person runs their own copy with 
 
 | Tool | Required for | How to get it |
 |------|--------------|---------------|
-| **Cursor** or **Claude Code** | Running the skill | Your IDE / CLI |
+| **Claude Code and Codex** | Running the skill | Install/configure both runtimes; both are mandatory |
 | **GitHub CLI** (`gh`) | PR stats, team GitHub activity | `brew install gh` then `gh auth login` |
-| **Jira MCP** (optional) | Ticket status, active assignments, Jira comments | Cursor MCP settings + Cisco Jira token |
+| **Jira MCP** (optional) | Ticket status, active assignments, Jira comments | Configure in Claude Code and verify availability in Codex |
 | **Confluence client skill** (optional) | Read-only pages, comments, mentions, action items | Install `confluence-client` skill |
 | **Internal Webex CLI skill** | Messaging catch-up, meetings, live transcripts, artifacts, calendar routing, team check-ins | Install/enable using your internal Webex CLI skill setup |
 | **Cisco VPN** | Jira MCP / internal Jira | Connect when querying Jira |
@@ -34,36 +34,40 @@ Unzip or copy the `work_track_skill` folder shared by your team lead.
 
 ---
 
-## Step 2 — Install into your skills folder
+## Step 2 — Install into both skills folders
+
+Work-track must be installed for both Claude Code and Codex. Keep both copies configured with the same `config.json` and `team.json`.
 
 ### Recommended — use the install script
 
 ```bash
 cd WorkTrackSkill
-./install.sh
+./skills/install.sh
 ```
 
-This copies all skill files to `~/.claude/skills/work-track/` and prints:
+This copies all skill files to both required locations:
+
 ```
 Installed to ~/.claude/skills/work-track
+Installed to ~/.agents/skills/work-track
 ```
 
-Restart Claude Code after running.
+Restart Claude Code and Codex after running.
 
-### Manual — Cursor
+### Manual — Codex
 
 ```bash
-mkdir -p ~/.cursor/skills/work-track
-cp -r WorkTrackSkill/* ~/.cursor/skills/work-track/
+mkdir -p ~/.agents/skills/work-track
+cp -r WorkTrackSkill/skills/* ~/.agents/skills/work-track/
 ```
 
-Restart Cursor or start a new Agent chat.
+Restart Codex or start a new Codex session.
 
 ### Manual — Claude Code (CLI)
 
 ```bash
 mkdir -p ~/.claude/skills/work-track
-cp -r WorkTrackSkill/* ~/.claude/skills/work-track/
+cp -r WorkTrackSkill/skills/* ~/.claude/skills/work-track/
 ```
 
 Restart Claude Code.
@@ -71,15 +75,18 @@ Restart Claude Code.
 ### Verify install
 
 ```bash
-ls ~/.cursor/skills/work-track/SKILL.md    # Cursor
-ls ~/.claude/skills/work-track/SKILL.md    # Claude CLI
+ls ~/.claude/skills/work-track/SKILL.md    # Claude Code
+ls ~/.agents/skills/work-track/SKILL.md    # Codex
 ```
 
 ---
 
 ## Step 3 — Configure your identity
 
-Edit `config.json` in your skills folder:
+Edit `config.json` in both skills folders:
+
+- Claude Code: `~/.claude/skills/work-track/config.json`
+- Codex: `~/.agents/skills/work-track/config.json`
 
 ```json
 "default_user": {
@@ -190,38 +197,7 @@ Populate `spaces` with Webex space names or IDs for your team. `code_review` spa
 
 Jira data requires **some** authenticated access. Pick one method:
 
-### Method A: Jira MCP in Cursor (recommended at Cisco)
-
-1. Open **Cursor Settings → MCP**
-2. Add servers (or copy from a teammate's template):
-
-```json
-{
-  "mcpServers": {
-    "jira-sjc12": {
-      "url": "https://aicoding-mcp.cisco.com/jira-sjc12/",
-      "headers": {
-        "X-JIRA-TOKEN": "<your-jira-api-token>"
-      }
-    },
-    "jira": {
-      "url": "https://aicoding-mcp.cisco.com/jira/",
-      "headers": {
-        "X-JIRA-TOKEN": "<your-jira-api-token>"
-      }
-    }
-  }
-}
-```
-
-3. Create token: https://id.atlassian.com/manage-profile/security/api-tokens  
-   (or your Cisco Jira token process)
-4. **Never commit tokens** to git — MCP settings only
-5. Toggle MCP servers **On**, reload Cursor, connect VPN if needed
-
-> **Important:** Cursor reads `~/.cursor/mcp.json`. Claude Code CLI does **not** read that file — and it also does **not** read `~/.claude/mcp.json`.
-
-### Method A2: Jira MCP in Claude Code CLI (required for Jira in terminal)
+### Method A: Jira MCP in Claude Code CLI
 
 Claude Code reads MCP from **only** these paths:
 
@@ -253,7 +229,7 @@ Or use **Option 1** below (`claude mcp add`).
 
 #### Option 1 — CLI (recommended)
 
-Set your token once in the shell (same token as Cursor MCP):
+Set your token once in the shell:
 
 ```bash
 export JIRA_API_TOKEN="your-jira-api-token"
@@ -308,15 +284,15 @@ export JIRA_BASE_URL="https://jira-eng-sjc12.cisco.com/jira"
 
 Restart Claude Code after editing settings.
 
-#### Cursor vs Claude — config locations
+#### Claude Code and Codex — config locations
 
-| Tool | Jira MCP config file | Skill folder |
-|------|----------------------|--------------|
-| **Cursor** | `~/.cursor/mcp.json` | `~/.cursor/skills/work-track/` |
-| **Claude CLI** | `~/.claude.json` (user scope) or project `.mcp.json` | `~/.claude/skills/work-track/` |
+| Runtime | Jira/source config | Skill folder |
+|---------|--------------------|--------------|
+| **Claude Code** | `~/.claude.json` (user scope) or project `.mcp.json` | `~/.claude/skills/work-track/` |
+| **Codex** | Runtime-provided MCP/tools/skills visible in the Codex session | `~/.agents/skills/work-track/` |
 | **Claude env fallback** | `~/.claude/settings.json` → `"env"` | — |
 
-If Claude shows *"JIRA_API_TOKEN not configured"* but Cursor Jira works, you only configured **Cursor** — add MCP or env vars for **Claude CLI** using the steps above.
+If Claude Code works but Codex does not, verify the Codex session has the needed Jira/GitHub/Webex/Confluence tools or skills loaded. If Codex works but Claude Code does not, add MCP or env vars for Claude Code using the steps above.
 
 ### Method B: Environment variables + script
 
@@ -351,7 +327,7 @@ Members without `jira_email` still appear in team reports with GitHub/Confluence
 
 ## Step 7 — Try it
 
-In Cursor or Claude:
+In Claude Code or Codex:
 
 ```
 /work-track
@@ -422,15 +398,16 @@ There is no way to read **private** Cisco Jira anonymously — you need either a
 ```bash
 cd WorkTrackSkill
 git pull
-cp -r * ~/.cursor/skills/work-track/
-# or ~/.claude/skills/work-track/
+cp -r skills/* ~/.claude/skills/work-track/
+cp -r skills/* ~/.agents/skills/work-track/
 ```
 
 If you maintain a Desktop copy:
 
 ```bash
-# Edit ~/Desktop/work_track_skill/team.json
-cp ~/Desktop/work_track_skill/team.json ~/.cursor/skills/work-track/team.json
+# Edit ~/Desktop/work_track_skill/skills/team.json
+cp ~/Desktop/work_track_skill/skills/team.json ~/.claude/skills/work-track/team.json
+cp ~/Desktop/work_track_skill/skills/team.json ~/.agents/skills/work-track/team.json
 ```
 
 ---
@@ -442,7 +419,8 @@ cp ~/Desktop/work_track_skill/team.json ~/.cursor/skills/work-track/team.json
 | Skill not triggering | Restart IDE; say "work track" explicitly |
 | Jira `fetch failed` | Refresh MCP; check VPN; rotate token |
 | GitHub MCP 401 | Use `gh` CLI instead of GitHub MCP |
-| **Claude CLI: no Jira, Cursor works** | Add Jira MCP to Claude (`claude mcp add`) or set `JIRA_API_TOKEN` in `~/.claude/settings.json` — see Method A2 |
+| **Claude Code: no Jira, Codex works** | Add Jira MCP to Claude (`claude mcp add`) or set `JIRA_API_TOKEN` in `~/.claude/settings.json` — see Method A |
+| **Codex: no Jira, Claude Code works** | Verify the Codex session has the Jira MCP/tool available and that the skill is installed under `~/.agents/skills/work-track/` |
 | No Jira data, GitHub works | Expected without token — add Jira MCP |
 | Hidden `.claude` folder | Finder: `Cmd+Shift+G` → `~/.claude/skills/work-track/` |
 | Member missing from report | Add `jira_email` and `github` in `team.json` |
@@ -454,5 +432,5 @@ See also [README.md](README.md), [CONFIG.md](CONFIG.md), [reference.md](referenc
 ## Security notes
 
 - Do **not** commit `JIRA_API_TOKEN`, `X-JIRA-TOKEN`, or GitHub PATs to the repo
-- Store tokens only in `~/.cursor/mcp.json` or shell env vars
+- Store tokens only in runtime MCP settings, OS keychain, or approved shell env vars
 - Consider making the GitHub repo **private** if `team.json` contains internal emails

@@ -2,6 +2,8 @@
 
 Track engineering work from **Jira**, **GitHub**, read-only **Confluence**, and mandatory **Webex CLI** context in one place. Generate individual or team work summaries and action items with PR stats, ticket status, Confluence pages/comments/mentions, meetings, messages, live transcripts, unanswered questions, and follow-ups.
 
+This skill must be installed and configured for **both Claude Code and Codex**. Keep `config.json` and `team.json` in sync across both runtimes so the same user/team/report inputs produce the same output.
+
 ---
 
 ## What this skill showcases
@@ -61,24 +63,25 @@ work_track_skill/
 
 ## Quick install
 
-See **[INSTALL.md](INSTALL.md)** for full steps (Cursor, Claude CLI, Jira MCP, GitHub CLI, Confluence client, and Webex CLI).
+See **[INSTALL.md](INSTALL.md)** for full steps (Claude Code, Codex, Jira MCP, GitHub CLI, Confluence client, and Webex CLI).
 
-## Setup — Cursor
+## Mandatory setup — Claude Code and Codex
 
-1. **Copy the skill folder**
+Install/configure the skill in both runtime locations:
 
-   ```bash
-   mkdir -p ~/.cursor/skills/work-track
-   cp -r /path/to/work_track_skill/* ~/.cursor/skills/work-track/
-   ```
+```bash
+mkdir -p ~/.claude/skills/work-track
+mkdir -p ~/.agents/skills/work-track
+cp -r /path/to/work_track_skill/skills/* ~/.claude/skills/work-track/
+cp -r /path/to/work_track_skill/skills/* ~/.agents/skills/work-track/
+```
 
-   Or drag `work_track_skill` contents into:
+Then edit both `config.json` files, or run `skills/install.sh` and copy the same configured files into both destinations:
 
-   ```
-   ~/.cursor/skills/work-track/
-   ```
+- Claude Code: `~/.claude/skills/work-track/config.json`
+- Codex: `~/.agents/skills/work-track/config.json`
 
-2. **Configure your identity** — edit `config.json`:
+1. **Configure your identity**:
 
    ```json
    "default_user": {
@@ -89,7 +92,7 @@ See **[INSTALL.md](INSTALL.md)** for full steps (Cursor, Claude CLI, Jira MCP, G
    }
    ```
 
-3. **Set Jira projects** — in `config.json`:
+2. **Set Jira projects** — in `config.json`:
 
    ```json
    "jira_projects": ["CAI", "YOUR_PROJECT"]
@@ -100,8 +103,9 @@ See **[INSTALL.md](INSTALL.md)** for full steps (Cursor, Claude CLI, Jira MCP, G
    - Add `jira_email` per member for full Jira tracking
    - Set `"active": false` to skip someone without deleting them
 
-5. **Connect MCP (recommended for Jira)**
-   - Configure **Jira MCP** in Cursor (e.g. `jira-sjc12` for Cisco Jira)
+5. **Connect source tools in both runtimes**
+   - Claude Code: configure Jira MCP with `claude mcp add` and verify with `claude mcp list`
+   - Codex: verify the Jira/GitHub/Webex/Confluence tools or skills are visible in the Codex session
    - GitHub: use **`gh` CLI** (`gh auth login`) or GitHub MCP if available
 
 6. **Use the skill**
@@ -110,36 +114,13 @@ See **[INSTALL.md](INSTALL.md)** for full steps (Cursor, Claude CLI, Jira MCP, G
 
 ---
 
-## Setup — Claude CLI (Claude Code)
+## Example prompts
 
-1. **Install the skill**
-
-   ```bash
-   mkdir -p ~/.claude/skills/work-track
-   cp -r /path/to/work_track_skill/* ~/.claude/skills/work-track/
-   ```
-
-2. **Auth — shell environment**
-
-   ```bash
-   export JIRA_BASE_URL=https://jira-eng-sjc12.cisco.com/jira
-   export JIRA_USER_EMAIL=you@cisco.com
-   export JIRA_API_TOKEN=your_token
-   # Create token: https://id.atlassian.com/manage-profile/security/api-tokens
-
-   gh auth login
-   ```
-
-3. **Edit `config.json` and `team.json`** (same as Cursor above)
-
-4. **Restart Claude Code** so it discovers the new skill
-
-5. **Example prompts**
-   - *“Track my weekly work”*
-   - *“Team work report for Teamspace this week”*
-   - *“Track my bi-weekly work for sync”*
-   - *“Work report for Shreyas with Confluence and Webex action items”*
-   - *“Add team member Alice, alice@cisco.com, github alice-dev”*
+- *“Track my weekly work”*
+- *“Team work report for Teamspace this week”*
+- *“Track my bi-weekly work for sync”*
+- *“Work report for Shreyas with Confluence and Webex action items”*
+- *“Add team member Alice, alice@cisco.com, github alice-dev”*
 
 ---
 
@@ -231,7 +212,7 @@ Merge lists, exclude bot accounts, then add each person to `team.json` with `jir
 | **GitHub CLI** | `gh auth login` — PR search and collaborator lists |
 | **Confluence client skill** | Optional read-only source — pages, comments, mentions, action items |
 | **Webex CLI skill** | Required — messaging catch-up, meetings, live transcripts, artifacts, calendar routing, team check-ins |
-| **Cursor or Claude Code** | Loads skills from `~/.cursor/skills/` or `~/.claude/skills/` |
+| **Claude Code and Codex** | Both are mandatory: `~/.claude/skills/work-track/` and `~/.agents/skills/work-track/` |
 
 Optional: Python scripts from `productivity-tracker` skill (`~/.claude/skills/productivity-tracker/scripts/`) for offline/batch fetch — see [reference.md](reference.md).
 

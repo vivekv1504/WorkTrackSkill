@@ -1,8 +1,11 @@
 # Work Track — Configuration Guide
 
-Skill location: `~/.claude/skills/work-track/`
+Mandatory skill locations:
 
-Edit these files directly, or ask Claude to update them (e.g. "add team member" or "add Jira project ENG").
+- Claude Code: `~/.claude/skills/work-track/`
+- Codex: `~/.agents/skills/work-track/`
+
+Keep `config.json` and `team.json` synchronized in both locations. Edit these files directly, or ask Claude/Codex to update them (e.g. "add team member" or "add Jira project ENG").
 
 ## Files
 
@@ -251,7 +254,9 @@ If a PR mentioned in a Webex code review space has `additions + deletions >= 150
 
 ---
 
-## Auth (Claude CLI)
+## Auth and runtime setup
+
+Claude Code and Codex setup are both mandatory. Configure the same identity, team roster, and source access in both runtimes.
 
 **MCP config paths (Claude Code):**
 
@@ -260,7 +265,7 @@ If a PR mentioned in a Webex code review space has `additions + deletions >= 150
 | User | `~/.claude.json` → `"mcpServers"` |
 | Project | `.mcp.json` at project root |
 
-**Not read:** `~/.claude/mcp.json`, `~/.cursor/mcp.json`, `settings.json`
+**Not read by Claude Code:** `~/.claude/mcp.json`, `~/.cursor/mcp.json`, `settings.json`
 
 Verify: `claude mcp list` should show `jira` and `jira-sjc12` as Connected.
 
@@ -273,18 +278,18 @@ export JIRA_API_TOKEN=your_token   # https://id.atlassian.com/manage-profile/sec
 gh auth login                      # GitHub via gh CLI
 ```
 
-If Jira MCP is configured in Claude Code, MCP can be used instead of env tokens.
+If Jira MCP is configured in Claude Code, MCP can be used instead of env tokens. For Codex, verify that Jira MCP/tools are visible in the Codex session before running a full report.
 
 ---
 
-## Cursor MCP — dual Jira setup
+## Jira MCP — dual board setup
 
 | MCP name | Use for | Instance |
 |----------|---------|----------|
 | `jira-sjc12` | CAI board | `jira-eng-sjc12` |
 | `jira` | GPK / SPARK board | `jira-eng-gpk2` |
 
-**GPK MCP config (Cursor → Settings → MCP):**
+**GPK MCP config:**
 
 | Field | Value |
 |-------|-------|
@@ -293,13 +298,13 @@ If Jira MCP is configured in Claude Code, MCP can be used instead of env tokens.
 | URL | `https://aicoding-mcp.cisco.com/jira/` |
 | Header | `X-JIRA-TOKEN: <your-token>` |
 
-**Never** put the token in `config.json`, `team.json`, or git. Store it only in Cursor MCP settings.
+**Never** put the token in `config.json`, `team.json`, or git. Store it only in the runtime MCP settings, OS keychain, or approved environment-variable flow.
 
 SPARK uses different statuses (`Ready`, `Verification`, `New`, `In Progress`, `Code Complete`). Active = not `Done` / `Closed` / `Resolved`.
 
 ---
 
-## Example prompts in Claude CLI
+## Example prompts in Claude Code or Codex
 
 - "Track my weekly work"
 - "Track my bi-weekly work for sync"
