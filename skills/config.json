@@ -1,0 +1,103 @@
+{
+  "default_user": {
+    "display_name": "Vintha Vivekananda",
+    "jira_email": "vinvivek@cisco.com",
+    "jira_username": "vinvivek",
+    "github_username": "vivekv1504"
+  },
+  "defaults": {
+    "period_mode": "weekly",
+    "period_days": 7,
+    "github_scope": "*",
+    "jira_projects": ["CAI", "SPARK"],
+    "jira_base_url": "https://jira-eng-sjc12.cisco.com/jira",
+    "done_statuses": ["Done"],
+    "in_progress_statuses": ["In Progress", "In Review"]
+  },
+  "periods": {
+    "weekly": {
+      "days": 7,
+      "consumer": "teamspace",
+      "description": "Weekly data used as input for the Teamspace skill."
+    },
+    "bi_weekly": {
+      "days": 14,
+      "consumer": "bi_weekly_sync",
+      "description": "Bi-weekly data used as input for the bi-weekly sync skill."
+    },
+    "custom": {
+      "consumer": "ad_hoc",
+      "description": "Custom date range supplied by the user with explicit start and end dates."
+    }
+  },
+  "jira_boards": [
+    {
+      "name": "CAI",
+      "instance": "sjc12",
+      "base_url": "https://jira-eng-sjc12.cisco.com/jira",
+      "projects": ["CAI"],
+      "mcp": "mcp_jira-sjc12"
+    },
+    {
+      "name": "SPARK",
+      "instance": "gpk2",
+      "base_url": "https://jira-eng-gpk2.cisco.com/jira",
+      "projects": ["SPARK"],
+      "mcp": "mcp_jira-gpk2"
+    }
+  ],
+  "tools": {
+    "jira_preferred": ["jira_mcp", "fetch_jira_script", "curl_rest"],
+    "github_preferred": ["gh_cli", "fetch_github_script"],
+    "confluence_preferred": ["confluence_client_skill"],
+    "webex_preferred": ["webex_cli_skill", "webex_cli"]
+  },
+  "github": {
+    "show_modification_lines": true,
+    "show_changed_files": true,
+    "modification_format": "+{additions} -{deletions}, {changedFiles} files",
+    "large_pr_lines": 1500
+  },
+  "confluence": {
+    "enabled": true,
+    "required": false,
+    "read_only": true,
+    "skill": "confluence-client",
+    "identity_field": "jira_email",
+    "spaces": [],
+    "search_pages": true,
+    "search_comments": true,
+    "search_mentions": true,
+    "search_action_items": true,
+    "notes": "Use the read-only confluence-client skill. Do not store Confluence credentials or tokens in this file."
+  },
+  "webex": {
+    "enabled": true,
+    "required": true,
+    "include_by_default": true,
+    "timezone": "Asia/Kolkata",
+    "identity_field": "jira_email",
+    "spaces": {
+      "team_checkin": [],
+      "code_review": [],
+      "release": [],
+      "blockers": [],
+      "general": []
+    },
+    "pr_review_thresholds": {
+      "large_pr_lines": 1500,
+      "stale_review_days": 3
+    },
+    "features": [
+      "messaging_catch_up",
+      "meeting_history",
+      "live_transcripts",
+      "meeting_artifacts",
+      "calendar_routing",
+      "confluence_jira_enrichment",
+      "team_checkin_work_summary_action_items",
+      "github_pr_space_correlation"
+    ],
+    "notes": "Webex CLI is mandatory for standard work-track reports. Use the internal Webex CLI skill for auth and secure local storage. Do not store Webex credentials in this file."
+  }
+}
